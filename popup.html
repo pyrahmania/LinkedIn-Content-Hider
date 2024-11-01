@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinkedIn Content Hider</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>LinkedIn Content Hider</h2>
+      <div class="column-container">
+        <!-- Keyword Blocker Section -->
+        <div class="blocker-section">
+          <h3>Keyword Blocker</h3>
+          <p>Hide posts containing specific keywords:</p>
+          <div class="input-group">
+            <input type="text" id="keyword" placeholder="Enter a keyword" />
+            <button id="addKeyword">Add</button>
+          </div>
+          <p id="keywordSuccessMessage" class="success-message" style="display: none;">Keyword added successfully!</p>
+          <h4>Blocked Keywords</h4>
+          <ul id="keywordsList"></ul>
+        </div>
+
+        <!-- Name Blocker Section -->
+        <div class="blocker-section">
+          <h3>Name Blocker</h3>
+          <p>Hide posts by specific people:</p>
+          <div class="input-group">
+            <input type="text" id="name" placeholder="Enter a name" />
+            <button id="addName">Add</button>
+          </div>
+          <p id="nameSuccessMessage" class="success-message" style="display: none;">Name added successfully!</p>
+          <h4>Blocked Names</h4>
+          <ul id="namesList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
