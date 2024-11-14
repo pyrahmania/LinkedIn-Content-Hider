@@ -1,17 +1,11 @@
 document.getElementById("addKeyword").addEventListener("click", addKeyword);
 document.getElementById("addName").addEventListener("click", addName);
-document.getElementById("promotedToggle").addEventListener("change", togglePromotedPosts);
 
-// Check if chrome.storage is available
-if (typeof chrome.storage !== "undefined" && chrome.storage.local) {
-  chrome.storage.local.get({ promotedPostsBlocked: false, keywords: [], names: [] }, (data) => {
-    document.getElementById("promotedToggle").checked = data.promotedPostsBlocked;
-    displayKeywords(data.keywords);
-    displayNames(data.names);
-  });
-} else {
-  console.error("chrome.storage is undefined. Make sure the 'storage' permission is set in the manifest.");
-}
+// Initialize the blocked items lists when the popup opens
+chrome.storage.local.get({ keywords: [], names: [] }, (data) => {
+  displayKeywords(data.keywords);
+  displayNames(data.names);
+});
 
 function addKeyword() {
   const keyword = document.getElementById("keyword").value.trim();
@@ -41,15 +35,6 @@ function addName() {
       });
     });
   }
-}
-
-function togglePromotedPosts() {
-  const isChecked = document.getElementById("promotedToggle").checked;
-  chrome.storage.local.set({ promotedPostsBlocked: isChecked }, () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: "togglePromotedPosts", state: isChecked });
-    });
-  });
 }
 
 function showSuccessMessage(elementId, message) {

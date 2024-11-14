@@ -1,32 +1,13 @@
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === "togglePromotedPosts") {
-    handlePromotedPosts(message.state);
-  }
-});
-
-chrome.storage.local.get(["promotedPostsBlocked", "keywords", "names"], (data) => {
-  if (data.promotedPostsBlocked) hidePromotedPosts();
+chrome.storage.local.get(["keywords", "names"], (data) => {
   if (data.keywords) hidePostsByKeywords(data.keywords);
   if (data.names) hidePostsByNames(data.names);
 });
-
-function handlePromotedPosts(blockPromoted) {
-  const posts = document.querySelectorAll("div:contains('Promoted')");
-  posts.forEach((post) => {
-    post.style.display = blockPromoted ? "none" : "block";
-  });
-}
-
-function hidePromotedPosts() {
-  const posts = document.querySelectorAll("div:contains('Promoted')");
-  posts.forEach((post) => post.style.display = "none");
-}
 
 function hidePostsByKeywords(keywords) {
   const posts = document.querySelectorAll("div.feed-shared-update-v2");
   posts.forEach((post) => {
     const text = post.innerText.toLowerCase();
-    if (keywords.some(keyword => text.includes(keyword.toLowerCase()))) {
+    if (keywords.some((keyword) => text.includes(keyword.toLowerCase()))) {
       post.style.display = "none";
     }
   });
@@ -42,9 +23,9 @@ function hidePostsByNames(names) {
   });
 }
 
+// Mutation observer to detect new posts in the feed and apply hiding logic
 const observer = new MutationObserver(() => {
-  chrome.storage.local.get(["promotedPostsBlocked", "keywords", "names"], (data) => {
-    if (data.promotedPostsBlocked) hidePromotedPosts();
+  chrome.storage.local.get(["keywords", "names"], (data) => {
     if (data.keywords) hidePostsByKeywords(data.keywords);
     if (data.names) hidePostsByNames(data.names);
   });
